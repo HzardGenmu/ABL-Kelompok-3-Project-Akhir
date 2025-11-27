@@ -9,10 +9,7 @@ app.use(cors());
 
 app.use(express.json());
 
-// Database Sederhana untuk Rekam Medis
 const medicalRecords = [];
-
-// URL Service Tetangga (Registration Service)
 const REGISTRATION_SERVICE_URL = 'http://localhost:3001';
 
 // API: Dokter Input Diagnosa
@@ -20,11 +17,8 @@ app.post('/diagnose', async (req, res) => {
     const { patientId, diagnosis, resep } = req.body;
 
     try {
-        // STEP 1: Komunikasi Antar Layanan
-        // Cek apakah Patient ID valid dengan bertanya ke Registration Service
         await axios.get(`${REGISTRATION_SERVICE_URL}/patients/${patientId}`);
 
-        // STEP 2: Jika pasien ada, simpan diagnosa
         const newRecord = {
             recordId: 'REC-' + (medicalRecords.length + 1),
             patientId,
@@ -42,7 +36,6 @@ app.post('/diagnose', async (req, res) => {
         });
 
     } catch (error) {
-        // Jika Registration Service merespon 404 (Pasien tidak ketemu)
         if (error.response && error.response.status === 404) {
             return res.status(404).json({ message: 'Error: ID Pasien tidak ditemukan di sistem pendaftaran.' });
         }
