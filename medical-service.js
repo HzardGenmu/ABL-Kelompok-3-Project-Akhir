@@ -1,14 +1,11 @@
 // medical-service.js
 const express = require('express');
 const axios = require('axios');
-const cors = require('cors'); // <--- TAMBAHAN 1
+const cors = require('cors'); 
 const app = express();
 const PORT = 3002;
 
-app.use(cors()); // <--- TAMBAHAN 2
-app.use(express.json());
-
-// ... sisa kode ke bawah tetap sama ...
+app.use(cors()); 
 
 app.use(express.json());
 
