@@ -4,28 +4,28 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3000; // Port Pintu Gerbang Utama
+const PORT = 3000;
 
-app.use(cors()); // Izinkan Frontend mengakses Gateway
+app.use(cors());
 
-// LOGGING (Untuk BUKTI Presentasi)
+// LOGGING
 app.use((req, res, next) => {
     console.log(`[GATEWAY] Menerima request ke: ${req.url}`);
     next();
 });
 
-// ATURAN 1: Kalau ada request ke /api/registration -> Arahkan ke Port 3001
+// Request ke /api/registration -> Arahkan ke Port 3001
 app.use('/api/registration', createProxyMiddleware({
-    target: 'http://localhost:3001', // Arahkan ke Service 1
+    target: 'http://localhost:3001',
     changeOrigin: true,
     pathRewrite: {
         '^/api/registration': '', // Hapus prefix saat diteruskan
     },
 }));
 
-// ATURAN 2: Kalau ada request ke /api/medical -> Arahkan ke Port 3002
+// Request ke /api/medical -> Arahkan ke Port 3002
 app.use('/api/medical', createProxyMiddleware({
-    target: 'http://localhost:3002', // Arahkan ke Service 2
+    target: 'http://localhost:3002',
     changeOrigin: true,
     pathRewrite: {
         '^/api/medical': '', 
